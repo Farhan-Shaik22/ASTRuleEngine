@@ -7,52 +7,32 @@ module.exports = {
   ],
   theme: {
     extend: {
-      animation: {
-        first: "moveVertical 30s ease infinite",
-        second: "moveInCircle 20s reverse infinite",
-        third: "moveInCircle 40s linear infinite",
-        fourth: "moveHorizontal 40s ease infinite",
-        fifth: "moveInCircle 20s ease infinite",
-      },
-      keyframes: {
-        moveHorizontal: {
-          "0%": {
-            transform: "translateX(-50%) translateY(-10%)",
-          },
-          "50%": {
-            transform: "translateX(50%) translateY(10%)",
-          },
-          "100%": {
-            transform: "translateX(-50%) translateY(-10%)",
-          },
-        },
-        moveInCircle: {
-          "0%": {
-            transform: "rotate(0deg)",
-          },
-          "50%": {
-            transform: "rotate(180deg)",
-          },
-          "100%": {
-            transform: "rotate(360deg)",
-          },
-        },
-        moveVertical: {
-          "0%": {
-            transform: "translateY(-50%)",
-          },
-          "50%": {
-            transform: "translateY(50%)",
-          },
-          "100%": {
-            transform: "translateY(-50%)",
-          },
-        },
-      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      fontFamily: {
+        'myFont': ['title'],
+      },
+      fontSize:{
+        sm: '1rem',
+        med: '1.15rem',
+        base: '1.5rem',
+        lg:'2rem',
+        xl: '2.5rem',
+        '2xl': '3rem',
+        '3xl': '3.5rem',
+        '4xl': '4rem',
+        '5xl': '4.5rem',
+        '6xl':'5rem',
+        '7xl':'6rem',
+        '8xl':'8rem',
+        '9xl':'10rem',
+        '10xl':'12rem',
+        '11xl':'14rem',
+        '12xl':'16rem',
+        '13xl':'18rem',
+      }
     },
   },
   plugins: [],
