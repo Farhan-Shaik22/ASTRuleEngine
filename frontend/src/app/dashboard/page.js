@@ -7,7 +7,7 @@ import Modal from "../_components/Modal";
 import Tree from "../_components/Treevis";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
-const API_TOKEN = process.env.NEXT_PUBLIC_API_TOKEN || "secret";
+// const API_TOKEN = process.env.NEXT_PUBLIC_API_TOKEN;
 
 export default function Dashboard() {
   const { isSignedIn, user, isLoaded } = useUser();
@@ -42,7 +42,6 @@ export default function Dashboard() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "token": API_TOKEN
         },
         body: JSON.stringify({ userid: userId }),
       });
@@ -138,7 +137,6 @@ export default function Dashboard() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "token": API_TOKEN
         },
         body: JSON.stringify({
           userid: userId,
@@ -176,7 +174,6 @@ export default function Dashboard() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "token": API_TOKEN
         },
         body: JSON.stringify({
           userid: userId,
