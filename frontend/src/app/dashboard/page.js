@@ -439,7 +439,7 @@ export default function Dashboard() {
         <Modal 
           value={isTreeModalOpen} 
           setvalue={setIsTreeModalOpen} 
-          children={<Tree astData={rules[selectedRule]?.ast} />}
+          ast={rules[selectedRule]?.ast}
         />
       )}
 

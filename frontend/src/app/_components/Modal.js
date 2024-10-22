@@ -1,4 +1,6 @@
-export default function Modal ({ value, setvalue , children }) {
+import Tree from "./Treevis";
+
+export default function Modal ({ value, setvalue , ast }) {
     const handleclose = () =>{
         setvalue(false);
     }
@@ -16,7 +18,7 @@ export default function Modal ({ value, setvalue , children }) {
               ✕
             </button>
           </div>
-          {children}
+          <Tree astData={ast}/>
         </div>
       </div>
     );
