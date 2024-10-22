@@ -2,33 +2,38 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const { createRule, combineRulesWithHeuristic, evaluateRule, validParanthesis } = require('./utils/ruleEngine');
+const {encrypt} =require("./utils/encryption");
 const Rule = require('./models/rule');
+const Users = require('./models/user');
 const cors= require('cors');
-
+require('dotenv').config();
 
 // Initialize Express
 const app = express();
 app.use(bodyParser.json());
 
 app.use(cors({
-    origin: 'http://localhost:3000', // Allow only this origin
-    credentials: true,               // If you are using cookies or auth headers
+    origin: '*', 
+    credentials: true,               
 }));
-
+const mstring = process.env.MONGO_STRING;
 // Connect to MongoDB
-mongoose.connect('mongodb+srv://farhan2262003:we9jNupRKBPAVgb9@devtesting.hu6xu.mongodb.net/?retryWrites=true&w=majority&appName=DevTesting', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(mstring, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.log(err));
+
 
 // Create rule
 app.post('/create_rule', async (req, res) => {
     const { ruleString } = req.body;
+    const{userid} =req.body;
     try {
         if(!validParanthesis(ruleString)){
+            console.log("hi");
             return res.status(400).send({error : "Invalid Paranthesis"});
         }
         const ast = createRule(ruleString);
-        const rule = new Rule({ ruleString, ast });
+        const rule = new Rule({ userid ,ruleString, ast });
         await rule.save();
         res.status(201).send({ message: 'Rule created', ast });
     } catch (error) {
@@ -36,10 +41,48 @@ app.post('/create_rule', async (req, res) => {
     }
 });
 
-app.post('/get', async(req, res)=> {
+app.post('/webhook/create', async(req,res)=>{
+    const {data} =req.body;
+    const {token} = req.headers;
+    try{
+        if(token!=process.env.SECRET_TOKEN){
+            return res.status(400).send({ error: "Invalid Token" });
+        }
+        const userId= encrypt(data.id);
+        const Email =data.email_addresses[0].email_address;
+        const user=new Users({email: Email, userid: userId});
+        await user.save();
+        res.status(201).send({ message: 'User created' });
+    }
+    catch (error) {
+        res.status(400).send({ error: error.message });
+    }
+});
+
+app.post('/api/get', async(req, res)=> {
+    const {userid} = req.body;
+    try{
+        const encrypteduserid= encrypt(userid);
+        const user= await Users.find({userid:encrypteduserid});
+        if(!user){
+            return res.status(404).send({ message: "Invalid User" });
+        }
+        const rules = await Rule.find({userid : userid});  
+        if (!rules) {
+            return res.status(404).send({ message: "Rule not found" });  // Handling if rule is not found
+        }
+        res.status(201).send({rules});
+    }
+    catch(error){
+        res.status(400).send({ error: error.message });
+    }
+});
+
+
+app.post('api/ast/get', async(req, res)=> {
     const {id} = req.body;
     try{
-        const rule = await Rule.findById(id);  // Using findById for clarity
+        const rule = await Rule.findById({id});  // Using findById for clarity
         if (!rule) {
             return res.status(404).send({ message: "Rule not found" });  // Handling if rule is not found
         }
@@ -52,17 +95,33 @@ app.post('/get', async(req, res)=> {
 });
 
 // Combine rules
+// Combine rules and save as a new rule
 app.post('/combine_rules', async (req, res) => {
-    const { ruleIds } = req.body;
+    const { ruleIds, userid } = req.body;
     try {
+        // Fetch the rules from the database by their IDs
         const rules = await Rule.find({ _id: { $in: ruleIds } });
+        
+        // If no rules found, send error
+        if (rules.length === 0) {
+            return res.status(404).send({ message: 'Rules not found' });
+        }
         const asts = rules.map(rule => rule.ast);
-        const combinedAst = combineRulesWithHeuristic(asts);
-        res.status(200).send({ message: 'Rules combined', combinedAst });
+        const ruleStrings = rules.map(rule => rule.ruleString);
+        const combined= combineRulesWithHeuristic(asts);
+        const combinedAst = combined[0];
+        const mostFrequentOperator=combined[1];
+        const combinedRuleString = ruleStrings.join(mostFrequentOperator);
+        const newRule = new Rule({ userid, ruleString: combinedRuleString, ast: combinedAst });
+        await newRule.save();
+
+        // Send response with the combined AST and new rule details
+        res.status(201).send({ message: 'Rules combined and saved', combinedRule: newRule });
     } catch (error) {
         res.status(400).send({ error: error.message });
     }
 });
+
 
 // Evaluate rule
 app.post('/evaluate_rule', async (req, res) => {

@@ -8,11 +8,13 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   return (
-    <div className="z-40 relative flex justify-center w-full p-4 bg-transparent">
+    <div className="z-50 relative flex justify-center w-full p-4 bg-transparent">
       <div className="relative w-full max-w-5xl bg-white border border-gray-200 rounded-full shadow-sm backdrop-blur-md bg-opacity-20">
         <div className="mx-auto flex items-center justify-between px-10 py-2">
           <div className="inline-flex items-center space-x-2">
+            <Link href="/">
             <span className="font-bold text-lg text-black">AST</span>
+            </Link>
           </div>
           <div className="hidden md:block">
             <ul className="inline-flex space-x-6">
@@ -52,7 +54,7 @@ export default function Navbar() {
               <div className="px-5 pb-6 pt-5">
                 <div className="flex items-center justify-between">
                   <div className="inline-flex items-center space-x-2">
-                    <span className="font-bold">Logo</span>
+                    <span className="font-bold">AST</span>
                   </div>
                 </div>
                 <div className="mt-6">

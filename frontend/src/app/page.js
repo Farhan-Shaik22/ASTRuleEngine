@@ -1,3 +1,4 @@
+import {SignedIn, SignedOut, UserButton} from '@clerk/nextjs'
 import React from "react";
 
 export default function Home() {
@@ -9,10 +10,18 @@ export default function Home() {
           className="bg-clip-text text-transparent drop-shadow-2xl bg-gradient-to-b from-white/80 to-white/20 p-2 z-20">
           Abstract Syntax Trees
         </p>
+        <SignedOut>
         <p
           className="bg-clip-text text-transparent drop-shadow-2xl bg-gradient-to-b from-white/60 to-gray-700/40 p-2 z-20 text-base md:text-xl lg:text-2xl">
           Please Sign In or Sign Up to continue
         </p>
+        </SignedOut>
+        <SignedIn>
+        <p
+          className="bg-clip-text text-transparent drop-shadow-2xl bg-gradient-to-b from-white/60 to-gray-700/40 p-2 z-20 text-base md:text-xl lg:text-2xl">
+          Please Click on the Dashboard
+        </p>
+        </SignedIn>
       </div>)
   );
 }

@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 // Define the Rule schema
 const ruleSchema = new Schema({
+    userid:{ type: String, required: true},
     ruleString: { type: String, required: true },
     ast: { type: Object, required: true },
     createdAt: { type: Date, default: Date.now }

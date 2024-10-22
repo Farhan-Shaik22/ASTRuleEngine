@@ -119,13 +119,12 @@ function combineRulesWithHeuristic(asts) {
     // Find the most frequent operator
     const mostFrequentOperator = operatorCounts.AND >= operatorCounts.OR ? 'AND' : 'OR';
 
-    // Combine ASTs using the most frequent operator
     let combinedAst = asts[0];
     for (let i = 1; i < asts.length; i++) {
         combinedAst = new Node('operator', combinedAst, asts[i], mostFrequentOperator);
     }
 
-    return combinedAst;
+    return [combinedAst,mostFrequentOperator];
 }
 
 // Evaluate a rule AST against user data
@@ -141,17 +140,20 @@ function evaluateRule(ast, data) {
                 return leftEval || rightEval;
             }
         } else {
-            // Handle comparison operators like >, <, =, etc.
-            const leftOperand = ast.left.value;  // e.g., 'age'
-            const rightOperand = ast.right.value; // e.g., '30'
-            const operator = ast.value;
-            const dataValue = data[leftOperand];
 
-            if (operator === '>') return dataValue > rightOperand;
-            if (operator === '<') return dataValue < rightOperand;
-            if (operator === '>=') return dataValue >= rightOperand;
-            if (operator === '<=') return dataValue <= rightOperand;
-            if (operator === '=') return dataValue === rightOperand;
+            const leftOperand = ast.left.value;  
+            const operator = ast.value;          
+            const rightOperand = ast.right.value; 
+            const dataValue = data[leftOperand];  
+
+            if (operator === '>') return Number(dataValue) > Number(rightOperand);
+            if (operator === '<') return Number(dataValue) < Number(rightOperand);
+            if (operator === '>=') return Number(dataValue) >= Number(rightOperand);
+            if (operator === '<=') return Number(dataValue) <= Number(rightOperand);
+            
+            if (operator === '=') {
+                return String(dataValue).trim().toLowerCase() === String(rightOperand).trim().toLowerCase();
+            }
         }
     } else if (ast.type === 'operand') {
         return ast.value;
