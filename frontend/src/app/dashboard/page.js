@@ -53,7 +53,7 @@ export default function Dashboard() {
       const data = await response.json();
       setRules(data.rules);
     } catch (error) {
-      console.error("Error fetching rules:", error);
+      // console.error("Error fetching rules:", error);
       setError("Failed to fetch rules. Please try again later.");
     } finally {
       setIsLoadingRules(false);
@@ -117,7 +117,7 @@ export default function Dashboard() {
       const result= res.result
       setEvaluationResult(result+"");
     } catch (error) {
-      console.error("Error evaluating rule:", error);
+      // console.error("Error evaluating rule:", error);
       setError(error.message || "Failed to evaluate rule. Please check your JSON input.");
     } finally {
       setIsEvaluating(false);
@@ -155,7 +155,7 @@ export default function Dashboard() {
       setNewRuleString("");
       setModalType("add");
     } catch (error) {
-      console.error("Error adding rule:", error);
+      // console.error("Error adding rule:", error);
       setError("Failed to add rule. Please try again.");
     } finally {
       setIsSubmitting(false);
@@ -192,7 +192,7 @@ export default function Dashboard() {
       setSelectedRuleIds([]);
       setIsCombineMode(false);
     } catch (error) {
-      console.error("Error combining rules:", error);
+      // console.error("Error combining rules:", error);
       setError("Failed to combine rules. Please try again.");
     } finally {
       setIsSubmitting(false);
