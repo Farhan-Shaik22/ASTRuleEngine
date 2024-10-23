@@ -4,10 +4,9 @@ import { useUser } from "@clerk/clerk-react";
 import { useEffect, useState, useCallback } from "react";
 import Loader from "../_components/Loading";
 import Modal from "../_components/Modal";
-import Tree from "../_components/Treevis";
+import { toast } from "react-toastify";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
-// const API_TOKEN = process.env.NEXT_PUBLIC_API_TOKEN;
 
 export default function Dashboard() {
   const { isSignedIn, user, isLoaded } = useUser();
@@ -47,7 +46,7 @@ export default function Dashboard() {
       });
       
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(`HTTP error! status: ${response.data.message}`);
       }
       
       const data = await response.json();
@@ -59,6 +58,12 @@ export default function Dashboard() {
       setIsLoadingRules(false);
     }
   }, [userId]);
+
+  useEffect(() => {
+    if (error) {
+      toast(error);
+    }
+  }, [error]);
 
   useEffect(() => {
     if (isLoaded && isSignedIn && userId) {
@@ -147,7 +152,11 @@ export default function Dashboard() {
       });
       
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        
+        let errorData = await response.json();
+        console.log(errorData.error);
+        throw new Error(errorData.error || 'An error occurred');
+        
       }
       
       await fetchRules();
@@ -156,7 +165,7 @@ export default function Dashboard() {
       setModalType("add");
     } catch (error) {
       // console.error("Error adding rule:", error);
-      setError("Failed to add rule. Please try again.");
+      setError(error+"" || "Failed to add rule. Please try again.");
     } finally {
       setIsSubmitting(false);
     }

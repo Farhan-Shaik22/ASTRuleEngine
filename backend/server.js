@@ -1,37 +1,31 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const { createRule, combineRulesWithHeuristic, evaluateRule, validParanthesis } = require('./utils/ruleEngine');
+const { createRule, combineRulesWithHeuristic, evaluateRule} = require('./utils/ruleEngine');
 const {encrypt} =require("./utils/encryption");
 const Rule = require('./models/rule');
 const Users = require('./models/user');
 const cors= require('cors');
 require('dotenv').config();
 
-// Initialize Express
+
 const app = express();
 app.use(bodyParser.json());
 
 app.use(cors({
-    origin: '*', 
+    origin: 'http://localhost:3000', 
     credentials: true,               
 }));
 const mstring = process.env.MONGO_STRING;
-// Connect to MongoDB
 mongoose.connect(mstring, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.log(err));
 
 
-// Create rule
 app.post('/create_rule', async (req, res) => {
     const { ruleString } = req.body;
     const{userid} =req.body;
     try {
-        if(!validParanthesis(ruleString)){
-            console.log("hi");
-            return res.status(400).send({error : "Invalid Paranthesis"});
-        }
         const ast = createRule(ruleString);
         const rule = new Rule({ userid ,ruleString, ast });
         await rule.save();
@@ -69,7 +63,7 @@ app.post('/api/get', async(req, res)=> {
         }
         const rules = await Rule.find({userid : userid});  
         if (!rules) {
-            return res.status(404).send({ message: "Rule not found" });  // Handling if rule is not found
+            return res.status(404).send({ message: "Rule not found" });  
         }
         res.status(201).send({rules});
     }
@@ -82,9 +76,9 @@ app.post('/api/get', async(req, res)=> {
 app.post('api/ast/get', async(req, res)=> {
     const {id} = req.body;
     try{
-        const rule = await Rule.findById({id});  // Using findById for clarity
+        const rule = await Rule.findById({id}); 
         if (!rule) {
-            return res.status(404).send({ message: "Rule not found" });  // Handling if rule is not found
+            return res.status(404).send({ message: "Rule not found" }); 
         }
         const ast = rule.ast;
         res.status(201).send({ast});
@@ -94,15 +88,11 @@ app.post('api/ast/get', async(req, res)=> {
     }
 });
 
-// Combine rules
-// Combine rules and save as a new rule
+
 app.post('/combine_rules', async (req, res) => {
     const { ruleIds, userid } = req.body;
     try {
-        // Fetch the rules from the database by their IDs
         const rules = await Rule.find({ _id: { $in: ruleIds } });
-        
-        // If no rules found, send error
         if (rules.length === 0) {
             return res.status(404).send({ message: 'Rules not found' });
         }
@@ -114,8 +104,6 @@ app.post('/combine_rules', async (req, res) => {
         const combinedRuleString = ruleStrings.join(mostFrequentOperator);
         const newRule = new Rule({ userid, ruleString: combinedRuleString, ast: combinedAst });
         await newRule.save();
-
-        // Send response with the combined AST and new rule details
         res.status(201).send({ message: 'Rules combined and saved', combinedRule: newRule });
     } catch (error) {
         res.status(400).send({ error: error.message });
@@ -123,7 +111,6 @@ app.post('/combine_rules', async (req, res) => {
 });
 
 
-// Evaluate rule
 app.post('/evaluate_rule', async (req, res) => {
     const { ruleId, data } = req.body;
     try {
@@ -135,7 +122,6 @@ app.post('/evaluate_rule', async (req, res) => {
     }
 });
 
-// Start the server
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
