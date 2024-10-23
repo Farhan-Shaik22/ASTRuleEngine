@@ -110,10 +110,12 @@ export default function Dashboard() {
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
+        
       }
 
-      const result = await response.json()
-      setEvaluationResult(result.result);
+      const res = await response.json()
+      const result= res.result
+      setEvaluationResult(result+"");
     } catch (error) {
       console.error("Error evaluating rule:", error);
       setError(error.message || "Failed to evaluate rule. Please check your JSON input.");
