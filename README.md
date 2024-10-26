@@ -1,4 +1,4 @@
-# Sheena Seeds Technical Documentation
+# Abstract Syntax Tree Technical Documentation
 
 ## Table of Contents
 
