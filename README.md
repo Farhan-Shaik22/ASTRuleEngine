@@ -9,7 +9,8 @@
 - [Steps to Run the Project](#steps-to-run-the-project)
 - [Environment Variables](#environment-variables)
 - [Things to Keep in Mind](#things-to-keep-in-mind)
-
+- [Functionalities Implemented](#functionalities-implemented)
+- [Tech Stack](#tech-stack)
 
 ## Steps to Run the Project
 
@@ -72,7 +73,7 @@
  in advanced settings and set it as your SECRET_TOKEN set as your environment variable. Select the user.created event.
  ![image](https://github.com/user-attachments/assets/1159c4fd-df28-4ebb-ad0f-ea8214b9a2d0)
 
-## Tech Stack Used
+## Tech Stack 
 - **Frontend**: Next.js with TailwindCSS
 - **Backend**: Node.js
 - **Database**: MongoDB
