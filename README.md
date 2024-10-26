@@ -2,7 +2,7 @@
 
 ## Deployed Link
 
-1. [Click Here](https://ast-rule-engine-livid.vercel.app/)
+### [Click Here](https://ast-rule-engine-livid.vercel.app/)
 
 ## Table of Contents
 
