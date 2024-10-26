@@ -55,11 +55,11 @@
     NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
     NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL=/
     NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL=/
-    NEXT_PUBLIC_API_URL= put the production backend url
+    NEXT_PUBLIC_API_URL= put the production backend url or localhost
    ```
 
 ## Things to Keep in Mind
 
-Predefined ATTRIBUTE_CATALOG: ['age', 'department', 'salary', 'spend', 'experience']
-Predefined Operators: [ AND, OR, < , > , = , >=, <= ]
-Only use these while creating rules
+-Predefined ATTRIBUTE_CATALOG: ['age', 'department', 'salary', 'spend', 'experience']
+-Predefined Operators: [ AND, OR, < , > , = , >=, <= ]
+-Only use these while creating rules
