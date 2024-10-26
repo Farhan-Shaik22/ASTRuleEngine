@@ -60,11 +60,11 @@
 
 ## Things to Keep in Mind
 
--Predefined ATTRIBUTE_CATALOG: ['age', 'department', 'salary', 'spend', 'experience']
--Predefined Operators: [ AND, OR, < , > , = , >=, <= ]
--Only use these while creating rules
--Change the cors configuration in the server.js while using it in local.
--Create a webhook in the clerk project settings with production server link/webhook/create and also set the token in custom headers 
+1.Predefined ATTRIBUTE_CATALOG: ['age', 'department', 'salary', 'spend', 'experience']
+2.Predefined Operators: [ AND, OR, < , > , = , >=, <= ]
+3.Only use these while creating rules
+4.Change the cors configuration in the server.js while using it in local.
+5.Create a webhook in the clerk project settings with production server link/webhook/create and also set the token in custom headers 
  in advanced settings and set it as your SECRET_TOKEN set as your environment variable. Select the user.created event.
  ![image](https://github.com/user-attachments/assets/1159c4fd-df28-4ebb-ad0f-ea8214b9a2d0)
 
