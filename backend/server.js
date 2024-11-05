@@ -13,7 +13,7 @@ const app = express();
 app.use(bodyParser.json());
 
 app.use(cors({
-    origin: 'https://ast-rule-engine-livid.vercel.app/', 
+    origin: 'https://ast-rule-engine-livid.vercel.app', 
     credentials: true,               
 }));
 const mstring = process.env.MONGO_STRING;
