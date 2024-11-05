@@ -246,7 +246,7 @@ export default function Dashboard() {
       </div>
       <div className="flex justify-center items-center">
         <h1 className="bg-clip-text font-medium text-transparent drop-shadow-2xl bg-gradient-to-b from-white/80 to-gray-600/30 p-2 z-20 text-sm md:text-med lg:text-base">
-          Supported Attribute Catalog: 'age', 'department', 'salary', 'spend', 'experience'
+          Supported Attribute Catalog: age, department, salary, spend, experience
         </h1>
       </div>
 
