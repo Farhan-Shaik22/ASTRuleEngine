@@ -114,7 +114,8 @@ export default function Dashboard() {
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorData = await response.json();
+        throw new Error(`Error!: ${errorData.error}`);
         
       }
 
@@ -238,9 +239,14 @@ export default function Dashboard() {
 
   return (
     <div className="p-4">
-      <div className="flex justify-center items-center mb-6">
+      <div className="flex justify-center items-center mb">
         <h1 className="bg-clip-text font-semibold text-transparent drop-shadow-2xl bg-gradient-to-b from-white/80 to-gray-600/30 p-2 z-20 text-base md:text-xl lg:text-2xl">
           HELLO {userFullName}
+        </h1>
+      </div>
+      <div className="flex justify-center items-center">
+        <h1 className="bg-clip-text font-medium text-transparent drop-shadow-2xl bg-gradient-to-b from-white/80 to-gray-600/30 p-2 z-20 text-sm md:text-med lg:text-base">
+          Supported Attribute Catalog: 'age', 'department', 'salary', 'spend', 'experience'
         </h1>
       </div>
 
